@@ -1,18 +1,23 @@
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.action === "countBuzzwords") {
-      chrome.storage.sync.get(["buzzwords"], function(result) {
-        let buzzwords = result.buzzwords || ["synergy", "paradigm shift", "disruptive", "AI-powered", "blockchain"];
-        const text = document.body.innerText.toLowerCase();
-        let count = 0;
-        buzzwords.forEach(word => {
-          const regex = new RegExp("\\b" + word.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + "\\b", "g"); //escape special characters and use word boundaries
-          const matches = text.match(regex);
-          if (matches) {
-            count += matches.length;
-          }
-        });
-        sendResponse({ count: count });
-      });
-      return true;
-    }
+if (!window.buzzBeeInjected) {
+  window.buzzBeeInjected = true;
+  
+  const buzzwords = ["synergy", "innovation", "disrupt", "leverage", "paradigm", "scalable"];
+  let text = document.body.innerText;
+  let count = 0;
+  let detectedWords = {};
+
+  buzzwords.forEach(word => {
+      let matches = text.match(new RegExp(`\\b${word}\\b`, "gi"));
+      if (matches) {
+          count += matches.length;
+          detectedWords[word] = matches.length;
+      }
   });
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action === "getBuzzWords") {
+          sendResponse({ count: count || 0, detectedWords: detectedWords || {} });
+      }
+      return true; // Ensures response is asynchronous
+  });
+}

@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Buzz-Bee</title>
-  <style>
-    body {
-      width: 200px;
-      padding: 10px;
-      font-family: sans-serif;
-    }
-    #count {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-  </style>
+    <title>Buzz-Bee</title>
+    <script src="popup.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 10px; }
+        #buzz-score { font-size: 24px; font-weight: bold; }
+    </style>
 </head>
 <body>
-  <div id="count">Counting...</div>
-  <script src="popup.js"></script>
+    <h2>Buzz Score</h2>
+    <p id="buzz-score">Loading...</p>
+    <ul id="word-list"></ul>
 </body>
 </html>
