@@ -15,13 +15,14 @@ async function loadBuzzwords() {
     return buzzwords;
 }
 
-// Run the buzzword detection once CSV is loaded
 (async function() {
     if (!window.buzzBeeInjected) {
         window.buzzBeeInjected = true;
 
         let buzzwords = await loadBuzzwords();
         let text = document.body.innerText.toLowerCase();
+        let words = text.split(/\s+/).filter(word => word.length > 1); // Count only meaningful words
+        let totalWords = words.length;
         let count = 0;
         let detectedWords = {};
 
@@ -36,12 +37,11 @@ async function loadBuzzwords() {
             }
         });
 
-        // Listen for messages from popup.js
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (request.action === "getBuzzWords") {
-                sendResponse({ count, detectedWords });
+                sendResponse({ count, detectedWords, totalWords });
             }
-            return true; // Ensures response is asynchronous
+            return true;
         });
     }
 })();
