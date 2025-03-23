@@ -3,7 +3,7 @@
   "name": "Buzz-Bee",
   "version": "1.0",
   "description": "Counts buzzwords on a webpage and gives a score.",
-  "permissions": ["activeTab", "storage", "scripting"],
+  "permissions": ["activeTab"],
   "action": {
     "default_popup": "popup.html"
   },
